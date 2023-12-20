@@ -17,6 +17,8 @@ Add it to the resources folder and then put ensure Fivem-Vehicle-Persistence in 
 3. /toggeautosave command disables/enables auto saving of vehicle data into the database when a player disconnects
    When it is enabled Players don't need to save their vehicle information manually, when they disconnect from the server or crash, the script autosaves the vehicle details and loads them when the player respawns.
 
-Note: Keys can be configured at the top of the client.lua 
+Note: 1.Keys can be configured at the top of the client.lua 
+      2.Remember that manual entries are not auto deleted as player might want to keep those checkpoints, so if you manually save your vehicle data into the database by pressing the key, you will also have to delete it 
+        by pressing the specified key or else you will respawn there upon reconnect.
 
 For any issues contact me @Discord(badassfalcon)
