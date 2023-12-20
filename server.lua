@@ -50,15 +50,6 @@ AddEventHandler("updateAutoSaveStatus", function(newStatus)
     print("Auto vehicle saves status updated:", isAutoSaveEnabled)
 end)
 
-
-
--- Event to update the auto save status
-RegisterServerEvent("updateAutoSaveStatus")
-AddEventHandler("updateAutoSaveStatus", function(newStatus)
-    isAutoSaveEnabled = newStatus
-    print("Auto vehicle saves status updated:", isAutoSaveEnabled)
-end)
-
 -- Event to handle the current vehicle data from the client
 RegisterServerEvent("CurrentVehicle")
 AddEventHandler("CurrentVehicle", function(vehicleData)
