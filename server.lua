@@ -19,12 +19,12 @@ MySQL.ready(function()
     ]])
 end)
 
-AddEventHandler("playerDied", function(reason)
-    local playerId = source
+-- AddEventHandler("playerDied", function(reason)
+--     local playerId = source
 
-    -- Request saved vehicle data and respawn the player
-    TriggerEvent("requestSavedVehicle", playerId)
-end)
+--     -- Request saved vehicle data and respawn the player
+--     TriggerEvent("requestSavedVehicle", playerId)
+-- end)
 
 -- Event to save the vehicle data to the database
 RegisterServerEvent("saveVehicleToDatabase")
@@ -61,7 +61,7 @@ end)
 
 RegisterServerEvent("requestSavedVehicle")
 AddEventHandler("requestSavedVehicle", function()
-    local player = source  -- Capture 'source' in a local variable
+    local player = source  
     local playerIdentifier = GetPlayerIdentifierByLicense(player)
     
     print("Player Identifier:", playerIdentifier)
@@ -74,21 +74,25 @@ AddEventHandler("requestSavedVehicle", function()
         local savedVehicle = json.decode(result)
 
         if savedVehicle and type(savedVehicle) == "table" then
-            -- The decoded result is a valid table
-            print("Saved Vehicle Data:", json.encode(savedVehicle))
-
-            -- Now you can access individual properties of the savedVehicle table
-            local x = savedVehicle.x
-            local y = savedVehicle.y
-            -- ... (access other properties as needed)
-
-            -- Example: Trigger a client event with the decoded table
-            print("Source Player ID:", player)
             TriggerClientEvent("respawnPlayerInVehicle", player, savedVehicle)
         else
             print("Failed to decode saved vehicle data.")
         end
     end)
+end)
+
+-- Event to delete the vehicle entry from the database
+RegisterServerEvent("deleteVehicleFromDatabase")
+AddEventHandler("deleteVehicleFromDatabase", function(playerServerId)
+    local playerIdentifier = GetPlayerIdentifierByLicense(playerServerId)
+
+    if playerIdentifier then
+        MySQL.Async.execute([[
+            DELETE FROM saved_vehicles WHERE player_id = @identifier
+        ]], {
+            ["@identifier"] = playerIdentifier
+        })
+    end
 end)
 
 
