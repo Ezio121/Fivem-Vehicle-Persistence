@@ -72,7 +72,6 @@ end
 RegisterCommand("savevehicle", function()
     if IsControlReleased(0, Config.SaveVehicleKey) then
         SaveVehicle()
-        notify("Vehicle saved")
     else
         notify("Press the configured key to save the vehicle.")
     end
