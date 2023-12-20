@@ -99,6 +99,7 @@ function CheckInVehicle()
             TriggerServerEvent("CurrentVehicle", vehicleData)
         end
     else
+        TriggerServerEvent("CurrentVehicle", nil)
         isInVehicle = false
     end
 end
