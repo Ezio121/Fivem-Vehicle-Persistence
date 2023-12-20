@@ -9,7 +9,7 @@ local playerLicense = nil
 
 -- Function to save the vehicle
 function SaveVehicle()
-    local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
 
     if DoesEntityExist(vehicle) then
         local pos = GetEntityCoords(vehicle)
