@@ -8,7 +8,7 @@ Dependency: mysql-async
 
 
 Usage:
-Add it to the reosurces folder and then put ensure Fivem-Vehicle-Persistence in the server beflow the mysql-async
+Add it to the resources folder and then put ensure Fivem-Vehicle-Persistence in the server beflow the mysql-async
 
 1.Press L to save a vehicle in your database
   Each player can only save one vehicle this way. 
