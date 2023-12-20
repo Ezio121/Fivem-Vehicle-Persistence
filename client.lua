@@ -1,4 +1,8 @@
 -- client.lua
+Config = {
+    SaveVehicleKey = 37,   -- Key code for 'L'
+    DeleteVehicleKey = 39, -- Key code for '['
+}
 
 local hasVehicleSaved = false
 local playerLicense = nil
@@ -30,7 +34,6 @@ function RespawnPlayerInVehicle(vehicleData)
 
         RequestModel(vehicleHash)
         while not HasModelLoaded(vehicleHash) do
-            print("I'M STUCKKK")
             Wait(500)
         end
 
@@ -49,8 +52,13 @@ end
 function notify(msg)
     SetNotificationTextEntry("STRING")
     AddTextComponentString(msg)
-    DrawNotification(false, false)
+    local notification = DrawNotification(false, false)
+    
+    Citizen.Wait(2000)
+    RemoveNotification(notification)
+    
 end
+
 -- Function to get the player's license and trigger the server event
 function GetPlayerLicense()
     local serverId = GetPlayerServerId(PlayerId())
@@ -60,10 +68,56 @@ function GetPlayerLicense()
     end
 end
 
--- Event to trigger saving the vehicle
+-- Event to trigger saving the vehicle when the configured key is pressed
 RegisterCommand("savevehicle", function()
-    SaveVehicle()
+    if IsControlReleased(0, Config.SaveVehicleKey) then
+        SaveVehicle()
+        notify("Vehicle saved")
+    else
+        notify("Press the configured key to save the vehicle.")
+    end
 end, false)
+
+-- Event to trigger deleting the vehicle entry from the database when the configured key is pressed
+
+RegisterCommand("deletevehicle", function()
+        TriggerServerEvent("deleteVehicleFromDatabase", GetPlayerServerId(PlayerId()))
+        notify("Vehicle entry deleted from the database.")
+end, false)
+
+
+local isDeleteKeyPressed = false
+
+-- Function to handle the key press
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+
+        if IsControlJustReleased(0, Config.DeleteVehicleKey) then
+            isDeleteKeyPressed = true
+        end
+    end
+end)
+
+-- Event to check for the key press and trigger the server event
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+
+        if isDeleteKeyPressed then
+            isDeleteKeyPressed = false  -- Reset the flag
+
+            -- Trigger the server event to delete the vehicle entry
+            TriggerServerEvent("deleteVehicleFromDatabase", GetPlayerServerId(PlayerId()))
+
+            -- Display a notification
+            notify("Vehicle entry deleted from the database.")
+        end
+    end
+end)
+
+
+
 
 -- Event to request the saved vehicle data when player joins
 AddEventHandler("playerSpawned", function()
