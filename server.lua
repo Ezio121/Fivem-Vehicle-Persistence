@@ -120,7 +120,7 @@ AddEventHandler("requestSavedVehicle", function()
         if savedVehicle and type(savedVehicle) == "table" then
             TriggerClientEvent("respawnPlayerInVehicle", player, savedVehicle)
         else
-            print("Failed to decode saved vehicle data.")
+            print("Vehicle Not Saved.")
         end
     end)
 end)
