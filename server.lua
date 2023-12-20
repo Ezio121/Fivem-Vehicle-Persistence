@@ -72,24 +72,28 @@ end)
 AddEventHandler("playerDropped", function(reason)
     local playerServerId = source
     print(playerServerId)
-    if currentVehicles[playerServerId] and isAutoSaveEnabled then
-        local vehicleData = currentVehicles[playerServerId]
-        local playerIdentifier = GetPlayerIdentifierByLicense(playerServerId)
-        print(playerIdentifier)
-        if playerIdentifier then
-            MySQL.Async.execute([[
-                REPLACE INTO saved_vehicles (player_id, vehicle_data)
-                VALUES (@identifier, @vehicleData)
-            ]], {
-                ["@identifier"] = playerIdentifier,
-                ["@vehicleData"] = json.encode(vehicleData)
-            })
-            print("Save Success")
+    if isAutoSaveEnabled then 
+        if currentVehicles[playerServerId] then
+            local vehicleData = currentVehicles[playerServerId]
+            local playerIdentifier = GetPlayerIdentifierByLicense(playerServerId)
+            print(playerIdentifier)
+            if playerIdentifier then
+                MySQL.Async.execute([[
+                    REPLACE INTO saved_vehicles (player_id, vehicle_data)
+                    VALUES (@identifier, @vehicleData)
+                ]], {
+                    ["@identifier"] = playerIdentifier,
+                    ["@vehicleData"] = json.encode(vehicleData)
+                })
+                print("Save Success")
+            end
+            currentVehicles[playerServerId] = nil  -- Clear the stored data after using it
+        else
+            print("Player Not in Vehicle")
         end
-        currentVehicles[playerServerId] = nil  -- Clear the stored data after using it
-    else
+    else 
         print("AutoSave Disabled")
-    end
+    end    
 end)
 
 
