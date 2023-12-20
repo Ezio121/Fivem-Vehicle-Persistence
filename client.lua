@@ -11,7 +11,7 @@ local isInVehicle = false
 
 -- Function to save the vehicle
 function SaveVehicle()
-    local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
 
     if DoesEntityExist(vehicle) then
         local pos = GetEntityCoords(vehicle)
@@ -30,7 +30,7 @@ function SaveVehicle()
 end
 
 function updateServer()
-    local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+    local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
 
     if DoesEntityExist(vehicle) then
         local pos = GetEntityCoords(vehicle)
@@ -89,7 +89,7 @@ end
 
 -- Function to check if the player is in a vehicle
 function CheckInVehicle()
-    local playerPed = GetPlayerPed(-1)
+    local playerPed = PlayerPedId()
     local inVehicle = IsPedInAnyVehicle(playerPed, false)
     if inVehicle then
         if not isInVehicle then
