@@ -4,6 +4,9 @@ A very simple Vehicle Persistence script that saves the vehicle and location you
 It works with all frameworks.
 
 Dependency: mysql-async
+
+
+
 Usage:
 Add it to the reosurces folder and then put ensure Fivem-Vehicle-Persistence in the server beflow the mysql-async
 
